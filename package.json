@@ -1,0 +1,43 @@
+{
+  "name": "n8n-nodes-missive",
+  "version": "1.0.0",
+  "description": "n8n node for Missive API",
+  "keywords": [
+    "n8n-community-node-package",
+    "missive"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/enfluid/n8n-nodes-missive",
+  "author": {
+    "name": "Aaron King",
+    "email": "aaronk@enfluid.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/enfluid/n8n-nodes-missive.git"
+  },
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "tslint -p tsconfig.json -c tslint.json",
+    "prepare": "npm run build"
+  },
+  "files": [
+    "dist"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "dist/Missive/MissiveApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/Missive/Missive.node.js"
+    ]
+  },
+  "devDependencies": {
+    "@devlikeapro/n8n-openapi-node": "^1.0.0",
+    "n8n-workflow": "^0.107.0",
+    "typescript": "^4.8.4"
+  }
+}
