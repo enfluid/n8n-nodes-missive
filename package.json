@@ -36,7 +36,7 @@
     ]
   },
   "dependencies": {
-    "@devlikeapro/n8n-openapi-node": "^1.0.0"
+    "@devlikeapro/n8n-openapi-node": "^0.1.4"
   },
   "devDependencies": {
     "n8n-workflow": "^0.107.0",
