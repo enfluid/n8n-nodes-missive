@@ -124,6 +124,32 @@ export class Missive implements INodeType {
         description: 'HTML body of the email',
       },
       {
+        displayName: 'Send',
+        name: 'send',
+        type: 'boolean',
+        default: false,
+        displayOptions: {
+          show: {
+            resource: ['draft'],
+            operation: ['createEmail'],
+          },
+        },
+        description: 'Whether to send the email immediately',
+      },
+      {
+        displayName: 'Close',
+        name: 'close',
+        type: 'boolean',
+        default: false,
+        displayOptions: {
+          show: {
+            resource: ['draft'],
+            operation: ['createEmail'],
+          },
+        },
+        description: 'Whether to close the conversation after sending',
+      },
+      {
         displayName: 'From Name',
         name: 'fromName',
         type: 'string',
@@ -295,6 +321,20 @@ export class Missive implements INodeType {
             description: 'ID of the conversation to create the draft in',
           },
           {
+            displayName: 'Conversation Subject',
+            name: 'conversationSubject',
+            type: 'string',
+            default: '',
+            description: 'Subject of the conversation (overwrites any existing subject)',
+          },
+          {
+            displayName: 'Conversation Color',
+            name: 'conversationColor',
+            type: 'color',
+            default: '',
+            description: 'Color of the conversation (e.g. #FF0000 for red)',
+          },
+          {
             displayName: 'Team ID',
             name: 'team',
             type: 'string',
@@ -332,11 +372,80 @@ export class Missive implements INodeType {
             placeholder: 'id1,id2',
           },
           {
+            displayName: 'Add Shared Labels',
+            name: 'addSharedLabels',
+            type: 'string',
+            default: '',
+            description: 'Label IDs to add to the conversation. Format: id1,id2',
+            placeholder: 'id1,id2',
+          },
+          {
+            displayName: 'Remove Shared Labels',
+            name: 'removeSharedLabels',
+            type: 'string',
+            default: '',
+            description: 'Label IDs to remove from the conversation. Format: id1,id2',
+            placeholder: 'id1,id2',
+          },
+          {
             displayName: 'Schedule For',
             name: 'scheduleFor',
             type: 'dateTime',
             default: '',
             description: 'When to send the draft',
+          },
+          {
+            displayName: 'Add to Inbox',
+            name: 'addToInbox',
+            type: 'boolean',
+            default: false,
+            description: 'Add the conversation to the inbox',
+          },
+          {
+            displayName: 'Add to Team Inbox',
+            name: 'addToTeamInbox',
+            type: 'boolean',
+            default: false,
+            description: 'Add the conversation to the team inbox',
+          },
+          {
+            displayName: 'Auto Follow-up',
+            name: 'autoFollowup',
+            type: 'boolean',
+            default: false,
+            description: 'Enable auto follow-up for this message',
+          },
+          {
+            displayName: 'Attachments',
+            name: 'attachments',
+            placeholder: 'Add Attachment',
+            type: 'fixedCollection',
+            typeOptions: {
+              multipleValues: true,
+            },
+            default: {},
+            options: [
+              {
+                name: 'attachment',
+                displayName: 'Attachment',
+                values: [
+                  {
+                    displayName: 'Binary Property',
+                    name: 'binaryPropertyName',
+                    type: 'string',
+                    default: 'data',
+                    description: 'Name of the binary property containing the attachment data',
+                  },
+                  {
+                    displayName: 'File Name',
+                    name: 'fileName',
+                    type: 'string',
+                    default: '',
+                    description: 'Name of the attachment file',
+                  },
+                ],
+              },
+            ],
           },
         ],
       },
@@ -358,6 +467,32 @@ export class Missive implements INodeType {
           },
         },
         description: 'Content of the message',
+      },
+      {
+        displayName: 'Send',
+        name: 'send',
+        type: 'boolean',
+        default: false,
+        displayOptions: {
+          show: {
+            resource: ['draft'],
+            operation: ['createMessaging'],
+          },
+        },
+        description: 'Whether to send the message immediately',
+      },
+      {
+        displayName: 'Close',
+        name: 'close',
+        type: 'boolean',
+        default: false,
+        displayOptions: {
+          show: {
+            resource: ['draft'],
+            operation: ['createMessaging'],
+          },
+        },
+        description: 'Whether to close the conversation after sending',
       },
       {
         displayName: 'From Phone Number',
@@ -442,6 +577,20 @@ export class Missive implements INodeType {
             description: 'ID of the conversation to create the draft in',
           },
           {
+            displayName: 'Conversation Subject',
+            name: 'conversationSubject',
+            type: 'string',
+            default: '',
+            description: 'Subject of the conversation (overwrites any existing subject)',
+          },
+          {
+            displayName: 'Conversation Color',
+            name: 'conversationColor',
+            type: 'color',
+            default: '',
+            description: 'Color of the conversation (e.g. #FF0000 for red)',
+          },
+          {
             displayName: 'Team ID',
             name: 'team',
             type: 'string',
@@ -479,11 +628,105 @@ export class Missive implements INodeType {
             placeholder: 'id1,id2',
           },
           {
+            displayName: 'Add Shared Labels',
+            name: 'addSharedLabels',
+            type: 'string',
+            default: '',
+            description: 'Label IDs to add to the conversation. Format: id1,id2',
+            placeholder: 'id1,id2',
+          },
+          {
+            displayName: 'Remove Shared Labels',
+            name: 'removeSharedLabels',
+            type: 'string',
+            default: '',
+            description: 'Label IDs to remove from the conversation. Format: id1,id2',
+            placeholder: 'id1,id2',
+          },
+          {
             displayName: 'Schedule For',
             name: 'scheduleFor',
             type: 'dateTime',
             default: '',
             description: 'When to send the draft',
+          },
+          {
+            displayName: 'Add to Inbox',
+            name: 'addToInbox',
+            type: 'boolean',
+            default: false,
+            description: 'Add the conversation to the inbox',
+          },
+          {
+            displayName: 'Add to Team Inbox',
+            name: 'addToTeamInbox',
+            type: 'boolean',
+            default: false,
+            description: 'Add the conversation to the team inbox',
+          },
+          {
+            displayName: 'Auto Follow-up',
+            name: 'autoFollowup',
+            type: 'boolean',
+            default: false,
+            description: 'Enable auto follow-up for this message',
+          },
+          {
+            displayName: 'External Response ID',
+            name: 'externalResponseId',
+            type: 'string',
+            default: '',
+            displayOptions: {
+              show: {
+                '/messageType': ['whatsapp'],
+              },
+            },
+            description: 'ID for WhatsApp template responses (only for WhatsApp)',
+          },
+          {
+            displayName: 'External Response Variables',
+            name: 'externalResponseVariables',
+            type: 'string',
+            default: '',
+            displayOptions: {
+              show: {
+                '/messageType': ['whatsapp'],
+              },
+            },
+            description: 'Variables for WhatsApp templates in JSON format (only for WhatsApp)',
+            placeholder: '{"1":"Variable1","2":"Variable2"}',
+          },
+          {
+            displayName: 'Attachments',
+            name: 'attachments',
+            placeholder: 'Add Attachment',
+            type: 'fixedCollection',
+            typeOptions: {
+              multipleValues: true,
+            },
+            default: {},
+            options: [
+              {
+                name: 'attachment',
+                displayName: 'Attachment',
+                values: [
+                  {
+                    displayName: 'Binary Property',
+                    name: 'binaryPropertyName',
+                    type: 'string',
+                    default: 'data',
+                    description: 'Name of the binary property containing the attachment data',
+                  },
+                  {
+                    displayName: 'File Name',
+                    name: 'fileName',
+                    type: 'string',
+                    default: '',
+                    description: 'Name of the attachment file',
+                  },
+                ],
+              },
+            ],
           },
         ],
       },
@@ -556,6 +799,20 @@ export class Missive implements INodeType {
             description: 'ID of the conversation to create the post in',
           },
           {
+            displayName: 'Conversation Subject',
+            name: 'conversationSubject',
+            type: 'string',
+            default: '',
+            description: 'Subject of the conversation (overwrites any existing subject)',
+          },
+          {
+            displayName: 'Conversation Color',
+            name: 'conversationColor',
+            type: 'color',
+            default: '',
+            description: 'Color of the conversation (e.g. #FF0000 for red)',
+          },
+          {
             displayName: 'Team ID',
             name: 'team',
             type: 'string',
@@ -599,6 +856,60 @@ export class Missive implements INodeType {
             default: '',
             description: 'Label IDs to add to the conversation. Format: id1,id2',
             placeholder: 'id1,id2',
+          },
+          {
+            displayName: 'Remove Shared Labels',
+            name: 'removeSharedLabels',
+            type: 'string',
+            default: '',
+            description: 'Label IDs to remove from the conversation. Format: id1,id2',
+            placeholder: 'id1,id2',
+          },
+          {
+            displayName: 'Add to Inbox',
+            name: 'addToInbox',
+            type: 'boolean',
+            default: false,
+            description: 'Add the conversation to the inbox',
+          },
+          {
+            displayName: 'Add to Team Inbox',
+            name: 'addToTeamInbox',
+            type: 'boolean',
+            default: false,
+            description: 'Add the conversation to the team inbox',
+          },
+          {
+            displayName: 'Attachments',
+            name: 'attachments',
+            placeholder: 'Add Attachment',
+            type: 'fixedCollection',
+            typeOptions: {
+              multipleValues: true,
+            },
+            default: {},
+            options: [
+              {
+                name: 'attachment',
+                displayName: 'Attachment',
+                values: [
+                  {
+                    displayName: 'Binary Property',
+                    name: 'binaryPropertyName',
+                    type: 'string',
+                    default: 'data',
+                    description: 'Name of the binary property containing the attachment data',
+                  },
+                  {
+                    displayName: 'File Name',
+                    name: 'fileName',
+                    type: 'string',
+                    default: '',
+                    description: 'Name of the attachment file',
+                  },
+                ],
+              },
+            ],
           },
         ],
       },
@@ -944,6 +1255,8 @@ export class Missive implements INodeType {
           if (operation === 'createEmail') {
             const subject = this.getNodeParameter('subject', i) as string;
             const body = this.getNodeParameter('body', i) as string;
+            const send = this.getNodeParameter('send', i, false) as boolean;
+            const close = this.getNodeParameter('close', i, false) as boolean;
             const fromName = this.getNodeParameter('fromName', i, '') as string;
             const fromEmail = this.getNodeParameter('fromEmail', i, '') as string;
             
@@ -954,17 +1267,27 @@ export class Missive implements INodeType {
             const additionalFields = this.getNodeParameter('additionalFields', i, {}) as {
               references?: string;
               conversation?: string;
+              conversationSubject?: string;
+              conversationColor?: string;
               team?: string;
               forceTeam?: boolean;
               organization?: string;
               addUsers?: string;
               addAssignees?: string;
+              addSharedLabels?: string;
+              removeSharedLabels?: string;
               scheduleFor?: string;
+              addToInbox?: boolean;
+              addToTeamInbox?: boolean;
+              autoFollowup?: boolean;
+              attachments?: { attachment: Array<{ binaryPropertyName: string, fileName: string }> };
             };
             
             const draftData: any = {
               subject,
               body,
+              send,
+              close,
             };
             
             // Set from information if provided
@@ -996,6 +1319,14 @@ export class Missive implements INodeType {
               draftData.conversation = additionalFields.conversation;
             }
             
+            if (additionalFields.conversationSubject) {
+              draftData.conversation_subject = additionalFields.conversationSubject;
+            }
+            
+            if (additionalFields.conversationColor) {
+              draftData.conversation_color = additionalFields.conversationColor;
+            }
+            
             if (additionalFields.team) {
               draftData.team = additionalFields.team;
             }
@@ -1016,8 +1347,51 @@ export class Missive implements INodeType {
               draftData.add_assignees = additionalFields.addAssignees.split(',').map(id => id.trim());
             }
             
+            if (additionalFields.addSharedLabels) {
+              draftData.add_shared_labels = additionalFields.addSharedLabels.split(',').map(id => id.trim());
+            }
+            
+            if (additionalFields.removeSharedLabels) {
+              draftData.remove_shared_labels = additionalFields.removeSharedLabels.split(',').map(id => id.trim());
+            }
+            
             if (additionalFields.scheduleFor) {
               draftData.schedule_for = additionalFields.scheduleFor;
+            }
+            
+            if (additionalFields.addToInbox !== undefined) {
+              draftData.add_to_inbox = additionalFields.addToInbox;
+            }
+            
+            if (additionalFields.addToTeamInbox !== undefined) {
+              draftData.add_to_team_inbox = additionalFields.addToTeamInbox;
+            }
+            
+            if (additionalFields.autoFollowup !== undefined) {
+              draftData.auto_followup = additionalFields.autoFollowup;
+            }
+            
+            // Handle attachments if any
+            if (additionalFields.attachments && additionalFields.attachments.attachment) {
+              const attachmentsData = [];
+              
+              for (const attachment of additionalFields.attachments.attachment) {
+                const binaryData = this.helpers.assertBinaryData(i, attachment.binaryPropertyName);
+                const binaryDataBuffer = await this.helpers.getBinaryDataBuffer(i, attachment.binaryPropertyName);
+                
+                const fileName = attachment.fileName || binaryData.fileName || 'unknown';
+                const mimeType = binaryData.mimeType || 'application/octet-stream';
+                
+                attachmentsData.push({
+                  filename: fileName,
+                  content_type: mimeType,
+                  content: binaryDataBuffer.toString('base64'),
+                });
+              }
+              
+              if (attachmentsData.length > 0) {
+                draftData.attachments = attachmentsData;
+              }
             }
             
             const options = {
@@ -1038,6 +1412,8 @@ export class Missive implements INodeType {
           // Create SMS & WhatsApp
           else if (operation === 'createMessaging') {
             const body = this.getNodeParameter('body', i) as string;
+            const send = this.getNodeParameter('send', i, false) as boolean;
+            const close = this.getNodeParameter('close', i, false) as boolean;
             const fromPhoneNumber = this.getNodeParameter('fromPhoneNumber', i) as string;
             const messageType = this.getNodeParameter('messageType', i) as string;
             const toPhoneNumbersString = this.getNodeParameter('toPhoneNumbers', i) as string;
@@ -1045,16 +1421,28 @@ export class Missive implements INodeType {
             const additionalFields = this.getNodeParameter('additionalFields', i, {}) as {
               references?: string;
               conversation?: string;
+              conversationSubject?: string;
+              conversationColor?: string;
               team?: string;
               forceTeam?: boolean;
               organization?: string;
               addUsers?: string;
               addAssignees?: string;
+              addSharedLabels?: string;
+              removeSharedLabels?: string;
               scheduleFor?: string;
+              addToInbox?: boolean;
+              addToTeamInbox?: boolean;
+              autoFollowup?: boolean;
+              externalResponseId?: string;
+              externalResponseVariables?: string;
+              attachments?: { attachment: Array<{ binaryPropertyName: string, fileName: string }> };
             };
             
             const draftData: any = {
               body,
+              send,
+              close,
             };
             
             // Set from field for SMS/WhatsApp
@@ -1076,6 +1464,14 @@ export class Missive implements INodeType {
               draftData.conversation = additionalFields.conversation;
             }
             
+            if (additionalFields.conversationSubject) {
+              draftData.conversation_subject = additionalFields.conversationSubject;
+            }
+            
+            if (additionalFields.conversationColor) {
+              draftData.conversation_color = additionalFields.conversationColor;
+            }
+            
             if (additionalFields.team) {
               draftData.team = additionalFields.team;
             }
@@ -1096,8 +1492,69 @@ export class Missive implements INodeType {
               draftData.add_assignees = additionalFields.addAssignees.split(',').map(id => id.trim());
             }
             
+            if (additionalFields.addSharedLabels) {
+              draftData.add_shared_labels = additionalFields.addSharedLabels.split(',').map(id => id.trim());
+            }
+            
+            if (additionalFields.removeSharedLabels) {
+              draftData.remove_shared_labels = additionalFields.removeSharedLabels.split(',').map(id => id.trim());
+            }
+            
             if (additionalFields.scheduleFor) {
               draftData.schedule_for = additionalFields.scheduleFor;
+            }
+            
+            if (additionalFields.addToInbox !== undefined) {
+              draftData.add_to_inbox = additionalFields.addToInbox;
+            }
+            
+            if (additionalFields.addToTeamInbox !== undefined) {
+              draftData.add_to_team_inbox = additionalFields.addToTeamInbox;
+            }
+            
+            if (additionalFields.autoFollowup !== undefined) {
+              draftData.auto_followup = additionalFields.autoFollowup;
+            }
+            
+            // Add WhatsApp specific fields
+            if (messageType === 'whatsapp') {
+              if (additionalFields.externalResponseId) {
+                draftData.external_response_id = additionalFields.externalResponseId;
+              }
+              
+              if (additionalFields.externalResponseVariables) {
+                try {
+                  // Parse JSON string to object
+                  draftData.external_response_variables = JSON.parse(additionalFields.externalResponseVariables);
+                } catch (error) {
+                  throw new NodeOperationError(this.getNode(), 'Invalid JSON in External Response Variables', {
+                    itemIndex: i,
+                  });
+                }
+              }
+            }
+            
+            // Handle attachments if any
+            if (additionalFields.attachments && additionalFields.attachments.attachment) {
+              const attachmentsData = [];
+              
+              for (const attachment of additionalFields.attachments.attachment) {
+                const binaryData = this.helpers.assertBinaryData(i, attachment.binaryPropertyName);
+                const binaryDataBuffer = await this.helpers.getBinaryDataBuffer(i, attachment.binaryPropertyName);
+                
+                const fileName = attachment.fileName || binaryData.fileName || 'unknown';
+                const mimeType = binaryData.mimeType || 'application/octet-stream';
+                
+                attachmentsData.push({
+                  filename: fileName,
+                  content_type: mimeType,
+                  content: binaryDataBuffer.toString('base64'),
+                });
+              }
+              
+              if (attachmentsData.length > 0) {
+                draftData.attachments = attachmentsData;
+              }
             }
             
             const options = {
@@ -1125,12 +1582,18 @@ export class Missive implements INodeType {
             const additionalFields = this.getNodeParameter('additionalFields', i, {}) as {
               references?: string;
               conversation?: string;
+              conversationSubject?: string;
+              conversationColor?: string;
               team?: string;
               forceTeam?: boolean;
               organization?: string;
               addUsers?: string;
               addAssignees?: string;
               addSharedLabels?: string;
+              removeSharedLabels?: string;
+              addToInbox?: boolean;
+              addToTeamInbox?: boolean;
+              attachments?: { attachment: Array<{ binaryPropertyName: string, fileName: string }> };
             };
             
             const postData: any = {
@@ -1144,6 +1607,14 @@ export class Missive implements INodeType {
             
             if (additionalFields.conversation) {
               postData.conversation = additionalFields.conversation;
+            }
+            
+            if (additionalFields.conversationSubject) {
+              postData.conversation_subject = additionalFields.conversationSubject;
+            }
+            
+            if (additionalFields.conversationColor) {
+              postData.conversation_color = additionalFields.conversationColor;
             }
             
             if (additionalFields.team) {
@@ -1168,6 +1639,41 @@ export class Missive implements INodeType {
             
             if (additionalFields.addSharedLabels) {
               postData.add_shared_labels = additionalFields.addSharedLabels.split(',').map(id => id.trim());
+            }
+            
+            if (additionalFields.removeSharedLabels) {
+              postData.remove_shared_labels = additionalFields.removeSharedLabels.split(',').map(id => id.trim());
+            }
+            
+            if (additionalFields.addToInbox !== undefined) {
+              postData.add_to_inbox = additionalFields.addToInbox;
+            }
+            
+            if (additionalFields.addToTeamInbox !== undefined) {
+              postData.add_to_team_inbox = additionalFields.addToTeamInbox;
+            }
+            
+            // Handle attachments if any
+            if (additionalFields.attachments && additionalFields.attachments.attachment) {
+              const attachmentsData = [];
+              
+              for (const attachment of additionalFields.attachments.attachment) {
+                const binaryData = this.helpers.assertBinaryData(i, attachment.binaryPropertyName);
+                const binaryDataBuffer = await this.helpers.getBinaryDataBuffer(i, attachment.binaryPropertyName);
+                
+                const fileName = attachment.fileName || binaryData.fileName || 'unknown';
+                const mimeType = binaryData.mimeType || 'application/octet-stream';
+                
+                attachmentsData.push({
+                  filename: fileName,
+                  content_type: mimeType,
+                  content: binaryDataBuffer.toString('base64'),
+                });
+              }
+              
+              if (attachmentsData.length > 0) {
+                postData.attachments = attachmentsData;
+              }
             }
             
             const options = {
