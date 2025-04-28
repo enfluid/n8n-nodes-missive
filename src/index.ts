@@ -1,5 +1,5 @@
-import { Missive } from './Missive/Missive.node';
-import { MissiveApi } from './Missive/MissiveApi.credentials';
+import { Missive } from './nodes/Missive/Missive.node';
+import { MissiveApi } from './credentials/MissiveApi.credentials';
 
 export {
   Missive,

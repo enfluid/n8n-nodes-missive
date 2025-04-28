@@ -11,6 +11,7 @@ export class MissiveApi implements ICredentialType {
       type: 'string',
       default: '',
       required: true,
+      description: 'Get your API token from your Missive preferences in the API tab',
     },
   ];
 }
