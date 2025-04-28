@@ -516,14 +516,14 @@ export class Missive implements INodeType {
         options: [
           {
             name: 'SMS',
-            value: 'twilio',
+            value: '',
           },
           {
             name: 'WhatsApp',
             value: 'whatsapp',
           },
         ],
-        default: 'sms',
+        default: '',
         required: true,
         displayOptions: {
           show: {
