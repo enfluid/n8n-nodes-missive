@@ -1292,22 +1292,22 @@ export class Missive implements INodeType {
             
             // Set from information if provided
             if (fromName || fromEmail) {
-              draftData.from = {};
-              if (fromName) draftData.from.name = fromName;
-              if (fromEmail) draftData.from.address = fromEmail;
+              draftData.from_field = {};
+              if (fromName) draftData.from_field.name = fromName;
+              if (fromEmail) draftData.from_field.address = fromEmail;
             }
             
             // Add to, cc, bcc recipients if any
             if (toData && toData.length > 0) {
-              draftData.to = toData;
+              draftData.to_field = toData;
             }
             
             if (ccData && ccData.length > 0) {
-              draftData.cc = ccData;
+              draftData.cc_field = ccData;
             }
             
             if (bccData && bccData.length > 0) {
-              draftData.bcc = bccData;
+              draftData.bcc_field = bccData;
             }
             
             // Add additional fields if any
@@ -1446,14 +1446,14 @@ export class Missive implements INodeType {
             };
             
             // Set from field for SMS/WhatsApp
-            draftData.from = {
+            draftData.from_field = {
               phone_number: fromPhoneNumber,
               type: messageType,
             };
             
             // Set to field for SMS/WhatsApp
             const toPhoneNumbers = toPhoneNumbersString.split(',').map(number => number.trim());
-            draftData.to = toPhoneNumbers.map(phoneNumber => ({ phone_number: phoneNumber }));
+            draftData.to_field = toPhoneNumbers.map(phoneNumber => ({ phone_number: phoneNumber }));
             
             // Add additional fields if any
             if (additionalFields.references) {
