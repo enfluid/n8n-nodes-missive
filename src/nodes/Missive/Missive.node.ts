@@ -524,7 +524,7 @@ export class Missive implements INodeType {
           },
         ],
         default: '',
-        required: true,
+        required: false,
         displayOptions: {
           show: {
             resource: ['draft'],
