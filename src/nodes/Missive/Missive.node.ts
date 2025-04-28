@@ -76,16 +76,22 @@ export class Missive implements INodeType {
         },
         options: [
           {
-            name: 'Create',
-            value: 'create',
-            description: 'Create a new draft',
-            action: 'Create a draft',
+            name: 'Create Email',
+            value: 'createEmail',
+            description: 'Create a new email draft',
+            action: 'Create an email draft',
+          },
+          {
+            name: 'Create SMS & WhatsApp',
+            value: 'createMessaging',
+            description: 'Create a new SMS or WhatsApp message draft',
+            action: 'Create an SMS or WhatsApp draft',
           },
         ],
-        default: 'create',
+        default: 'createEmail',
       },
 
-      // Draft Create Fields
+      // Draft Create Email Fields
       {
         displayName: 'Subject',
         name: 'subject',
@@ -95,10 +101,10 @@ export class Missive implements INodeType {
         displayOptions: {
           show: {
             resource: ['draft'],
-            operation: ['create'],
+            operation: ['createEmail'],
           },
         },
-        description: 'Subject of the draft',
+        description: 'Subject of the email',
       },
       {
         displayName: 'Body',
@@ -112,10 +118,10 @@ export class Missive implements INodeType {
         displayOptions: {
           show: {
             resource: ['draft'],
-            operation: ['create'],
+            operation: ['createEmail'],
           },
         },
-        description: 'HTML body of the draft',
+        description: 'HTML body of the email',
       },
       {
         displayName: 'From Name',
@@ -125,7 +131,7 @@ export class Missive implements INodeType {
         displayOptions: {
           show: {
             resource: ['draft'],
-            operation: ['create'],
+            operation: ['createEmail'],
           },
         },
         description: 'Name of the sender',
@@ -138,7 +144,7 @@ export class Missive implements INodeType {
         displayOptions: {
           show: {
             resource: ['draft'],
-            operation: ['create'],
+            operation: ['createEmail'],
           },
         },
         description: 'Email address of the sender',
@@ -154,7 +160,7 @@ export class Missive implements INodeType {
         displayOptions: {
           show: {
             resource: ['draft'],
-            operation: ['create'],
+            operation: ['createEmail'],
           },
         },
         default: {},
@@ -193,7 +199,7 @@ export class Missive implements INodeType {
         displayOptions: {
           show: {
             resource: ['draft'],
-            operation: ['create'],
+            operation: ['createEmail'],
           },
         },
         default: {},
@@ -232,7 +238,7 @@ export class Missive implements INodeType {
         displayOptions: {
           show: {
             resource: ['draft'],
-            operation: ['create'],
+            operation: ['createEmail'],
           },
         },
         default: {},
@@ -269,7 +275,154 @@ export class Missive implements INodeType {
         displayOptions: {
           show: {
             resource: ['draft'],
-            operation: ['create'],
+            operation: ['createEmail'],
+          },
+        },
+        options: [
+          {
+            displayName: 'References',
+            name: 'references',
+            type: 'string',
+            default: '',
+            description: 'References for threading. Format: reference1,reference2',
+            placeholder: 'ref1,ref2',
+          },
+          {
+            displayName: 'Conversation ID',
+            name: 'conversation',
+            type: 'string',
+            default: '',
+            description: 'ID of the conversation to create the draft in',
+          },
+          {
+            displayName: 'Team ID',
+            name: 'team',
+            type: 'string',
+            default: '',
+            description: 'ID of the team to link the draft\'s conversation to',
+          },
+          {
+            displayName: 'Force Team',
+            name: 'forceTeam',
+            type: 'boolean',
+            default: false,
+            description: 'Force a new team even if the conversation is already in another team',
+          },
+          {
+            displayName: 'Organization ID',
+            name: 'organization',
+            type: 'string',
+            default: '',
+            description: 'ID of the organization to scope the conversation to',
+          },
+          {
+            displayName: 'Add Users',
+            name: 'addUsers',
+            type: 'string',
+            default: '',
+            description: 'User IDs to get access to the conversation. Format: id1,id2',
+            placeholder: 'id1,id2',
+          },
+          {
+            displayName: 'Add Assignees',
+            name: 'addAssignees',
+            type: 'string',
+            default: '',
+            description: 'User IDs to assign to the conversation. Format: id1,id2',
+            placeholder: 'id1,id2',
+          },
+          {
+            displayName: 'Schedule For',
+            name: 'scheduleFor',
+            type: 'dateTime',
+            default: '',
+            description: 'When to send the draft',
+          },
+        ],
+      },
+
+      // Draft Create SMS & WhatsApp Fields
+      {
+        displayName: 'Body',
+        name: 'body',
+        type: 'string',
+        default: '',
+        required: true,
+        typeOptions: {
+          rows: 4,
+        },
+        displayOptions: {
+          show: {
+            resource: ['draft'],
+            operation: ['createMessaging'],
+          },
+        },
+        description: 'Content of the message',
+      },
+      {
+        displayName: 'From Phone Number',
+        name: 'fromPhoneNumber',
+        type: 'string',
+        default: '',
+        required: true,
+        displayOptions: {
+          show: {
+            resource: ['draft'],
+            operation: ['createMessaging'],
+          },
+        },
+        description: 'Phone number to send from (e.g., +18005550199)',
+        placeholder: '+18005550199',
+      },
+      {
+        displayName: 'Message Type',
+        name: 'messageType',
+        type: 'options',
+        options: [
+          {
+            name: 'SMS',
+            value: 'sms',
+          },
+          {
+            name: 'WhatsApp',
+            value: 'whatsapp',
+          },
+        ],
+        default: 'sms',
+        required: true,
+        displayOptions: {
+          show: {
+            resource: ['draft'],
+            operation: ['createMessaging'],
+          },
+        },
+        description: 'Type of message to send',
+      },
+      {
+        displayName: 'To Phone Numbers',
+        name: 'toPhoneNumbers',
+        type: 'string',
+        default: '',
+        required: true,
+        displayOptions: {
+          show: {
+            resource: ['draft'],
+            operation: ['createMessaging'],
+          },
+        },
+        description: 'Phone numbers to send to. Use comma to separate multiple numbers.',
+        placeholder: '+18005550199,+18005550200',
+      },
+      {
+        displayName: 'Additional Fields',
+        name: 'additionalFields',
+        type: 'collection',
+        placeholder: 'Add Field',
+        default: {},
+        displayOptions: {
+          show: {
+            resource: ['draft'],
+            operation: ['createMessaging'],
           },
         },
         options: [
@@ -787,8 +940,8 @@ export class Missive implements INodeType {
       try {
         // DRAFT RESOURCE
         if (resource === 'draft') {
-          // Create a draft
-          if (operation === 'create') {
+          // Create Email
+          if (operation === 'createEmail') {
             const subject = this.getNodeParameter('subject', i) as string;
             const body = this.getNodeParameter('body', i) as string;
             const fromName = this.getNodeParameter('fromName', i, '') as string;
@@ -833,6 +986,86 @@ export class Missive implements INodeType {
             if (bccData && bccData.length > 0) {
               draftData.bcc = bccData;
             }
+            
+            // Add additional fields if any
+            if (additionalFields.references) {
+              draftData.references = additionalFields.references.split(',').map(ref => ref.trim());
+            }
+            
+            if (additionalFields.conversation) {
+              draftData.conversation = additionalFields.conversation;
+            }
+            
+            if (additionalFields.team) {
+              draftData.team = additionalFields.team;
+            }
+            
+            if (additionalFields.forceTeam !== undefined) {
+              draftData.force_team = additionalFields.forceTeam;
+            }
+            
+            if (additionalFields.organization) {
+              draftData.organization = additionalFields.organization;
+            }
+            
+            if (additionalFields.addUsers) {
+              draftData.add_users = additionalFields.addUsers.split(',').map(id => id.trim());
+            }
+            
+            if (additionalFields.addAssignees) {
+              draftData.add_assignees = additionalFields.addAssignees.split(',').map(id => id.trim());
+            }
+            
+            if (additionalFields.scheduleFor) {
+              draftData.schedule_for = additionalFields.scheduleFor;
+            }
+            
+            const options = {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${credentials.apiToken}`,
+              },
+              uri: `${baseUrl}/drafts`,
+              body: { drafts: draftData },
+              json: true,
+            };
+            
+            const response = await this.helpers.request(options);
+            returnData.push({ json: response });
+          }
+          
+          // Create SMS & WhatsApp
+          else if (operation === 'createMessaging') {
+            const body = this.getNodeParameter('body', i) as string;
+            const fromPhoneNumber = this.getNodeParameter('fromPhoneNumber', i) as string;
+            const messageType = this.getNodeParameter('messageType', i) as string;
+            const toPhoneNumbersString = this.getNodeParameter('toPhoneNumbers', i) as string;
+            
+            const additionalFields = this.getNodeParameter('additionalFields', i, {}) as {
+              references?: string;
+              conversation?: string;
+              team?: string;
+              forceTeam?: boolean;
+              organization?: string;
+              addUsers?: string;
+              addAssignees?: string;
+              scheduleFor?: string;
+            };
+            
+            const draftData: any = {
+              body,
+            };
+            
+            // Set from field for SMS/WhatsApp
+            draftData.from = {
+              phone_number: fromPhoneNumber,
+              type: messageType,
+            };
+            
+            // Set to field for SMS/WhatsApp
+            const toPhoneNumbers = toPhoneNumbersString.split(',').map(number => number.trim());
+            draftData.to = toPhoneNumbers.map(phoneNumber => ({ phone_number: phoneNumber }));
             
             // Add additional fields if any
             if (additionalFields.references) {
