@@ -1299,7 +1299,7 @@ export class Missive implements INodeType {
             
             // Add to, cc, bcc recipients if any
             if (toData && toData.length > 0) {
-              draftData.to_field = toData;
+              draftData.to_fields = toData;
             }
             
             if (ccData && ccData.length > 0) {
@@ -1453,7 +1453,7 @@ export class Missive implements INodeType {
             
             // Set to field for SMS/WhatsApp
             const toPhoneNumbers = toPhoneNumbersString.split(',').map(number => number.trim());
-            draftData.to_field = toPhoneNumbers.map(phoneNumber => ({ phone_number: phoneNumber }));
+            draftData.to_fields = toPhoneNumbers.map(phoneNumber => ({ phone_number: phoneNumber }));
             
             // Add additional fields if any
             if (additionalFields.references) {
