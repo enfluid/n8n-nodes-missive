@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-missive",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "n8n node for Missive API",
   "keywords": [
     "n8n-community-node-package",
