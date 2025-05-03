@@ -866,6 +866,20 @@ export class Missive implements INodeType {
             placeholder: 'id1,id2',
           },
           {
+            displayName: 'Close Conversation',
+            name: 'close',
+            type: 'boolean',
+            default: false,
+            description: 'Whether to close the conversation after creating the post',
+          },
+          {
+            displayName: 'Re-open Conversation',
+            name: 'reopen',
+            type: 'boolean',
+            default: false,
+            description: 'Whether to re-open the conversation if it was closed',
+          },
+          {
             displayName: 'Add to Inbox',
             name: 'addToInbox',
             type: 'boolean',
@@ -878,6 +892,99 @@ export class Missive implements INodeType {
             type: 'boolean',
             default: false,
             description: 'Add the conversation to the team inbox',
+          },
+          {
+            displayName: 'Mark as Unread',
+            name: 'markAsUnread',
+            type: 'boolean',
+            default: false,
+            description: 'Mark the conversation as unread for all its members',
+          },
+          {
+            displayName: 'Suppress Notifications',
+            name: 'suppressNotifications',
+            type: 'boolean',
+            default: false,
+            description: 'Whether to suppress notifications for this post',
+          },
+          {
+            displayName: 'Send as System Message',
+            name: 'system',
+            type: 'boolean',
+            default: false,
+            description: 'Whether to send this post as a system message (appears differently in the UI)',
+          },
+          {
+            displayName: 'Custom Username',
+            name: 'username',
+            type: 'string',
+            default: '',
+            description: 'Name of the post author, used instead of the API token owner\'s name',
+          },
+          {
+            displayName: 'Custom Username Icon',
+            name: 'username_icon',
+            type: 'string',
+            default: '',
+            description: 'URL to an image for the post author avatar',
+            placeholder: 'https://example.com/avatar.png',
+          },
+          {
+            displayName: 'Custom Conversation Icon',
+            name: 'conversation_icon',
+            type: 'string',
+            default: '',
+            description: 'URL to an image used as the icon in the conversation list',
+            placeholder: 'https://example.com/icon.png',
+          },
+          {
+            displayName: 'Text (Plain)',
+            name: 'text',
+            type: 'string',
+            default: '',
+            typeOptions: {
+              rows: 4,
+            },
+            description: 'Plain text content of the post',
+          },
+          {
+            displayName: 'Markdown',
+            name: 'markdown',
+            type: 'string',
+            default: '',
+            typeOptions: {
+              rows: 4,
+            },
+            description: 'Markdown-formatted content of the post',
+          },
+          {
+            displayName: 'Notification',
+            name: 'notification',
+            placeholder: 'Add Notification',
+            type: 'fixedCollection',
+            default: {},
+            options: [
+              {
+                name: 'value',
+                displayName: 'Notification',
+                values: [
+                  {
+                    displayName: 'Title',
+                    name: 'title',
+                    type: 'string',
+                    default: '',
+                    description: 'Title of the notification',
+                  },
+                  {
+                    displayName: 'Body',
+                    name: 'body',
+                    type: 'string',
+                    default: '',
+                    description: 'Body text of the notification',
+                  },
+                ],
+              },
+            ],
           },
           {
             displayName: 'Attachments',
@@ -906,6 +1013,141 @@ export class Missive implements INodeType {
                     type: 'string',
                     default: '',
                     description: 'Name of the attachment file',
+                  },
+                  {
+                    displayName: 'Attachment Fields',
+                    name: 'fields',
+                    placeholder: 'Add Field',
+                    type: 'fixedCollection',
+                    typeOptions: {
+                      multipleValues: true,
+                    },
+                    default: {},
+                    options: [
+                      {
+                        name: 'field',
+                        displayName: 'Field',
+                        values: [
+                          {
+                            displayName: 'Title',
+                            name: 'title',
+                            type: 'string',
+                            default: '',
+                            description: 'Title of the field',
+                          },
+                          {
+                            displayName: 'Value',
+                            name: 'value',
+                            type: 'string',
+                            default: '',
+                            description: 'Value of the field',
+                          },
+                          {
+                            displayName: 'Short',
+                            name: 'short',
+                            type: 'boolean',
+                            default: false,
+                            description: 'If true, field will be displayed in a compact format',
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  {
+                    displayName: 'Color',
+                    name: 'color',
+                    type: 'color',
+                    default: '',
+                    description: 'Color for the attachment (hex code or named color)',
+                  },
+                  {
+                    displayName: 'Pretext',
+                    name: 'pretext',
+                    type: 'string',
+                    default: '',
+                    description: 'Text that appears above the attachment',
+                  },
+                  {
+                    displayName: 'Author Name',
+                    name: 'author_name',
+                    type: 'string',
+                    default: '',
+                    description: 'Name of the attachment author',
+                  },
+                  {
+                    displayName: 'Author Link',
+                    name: 'author_link',
+                    type: 'string',
+                    default: '',
+                    description: 'URL linking to the author',
+                    placeholder: 'https://example.com/author',
+                  },
+                  {
+                    displayName: 'Author Icon',
+                    name: 'author_icon',
+                    type: 'string',
+                    default: '',
+                    description: 'URL to an image for the author icon',
+                    placeholder: 'https://example.com/author-icon.png',
+                  },
+                  {
+                    displayName: 'Title',
+                    name: 'title',
+                    type: 'string',
+                    default: '',
+                    description: 'Title of the attachment',
+                  },
+                  {
+                    displayName: 'Title Link',
+                    name: 'title_link',
+                    type: 'string',
+                    default: '',
+                    description: 'URL linking to the attachment resource',
+                    placeholder: 'https://example.com/resource',
+                  },
+                  {
+                    displayName: 'Image URL',
+                    name: 'image_url',
+                    type: 'string',
+                    default: '',
+                    description: 'URL to an image for the attachment',
+                    placeholder: 'https://example.com/image.png',
+                  },
+                  {
+                    displayName: 'Text',
+                    name: 'text',
+                    type: 'string',
+                    default: '',
+                    description: 'Text content for the attachment',
+                  },
+                  {
+                    displayName: 'Markdown',
+                    name: 'markdown',
+                    type: 'string',
+                    default: '',
+                    description: 'Markdown-formatted text for the attachment',
+                  },
+                  {
+                    displayName: 'Timestamp',
+                    name: 'timestamp',
+                    type: 'number',
+                    default: '',
+                    description: 'Unix timestamp for the attachment',
+                  },
+                  {
+                    displayName: 'Footer',
+                    name: 'footer',
+                    type: 'string',
+                    default: '',
+                    description: 'Footer text for the attachment',
+                  },
+                  {
+                    displayName: 'Footer Icon',
+                    name: 'footer_icon',
+                    type: 'string',
+                    default: '',
+                    description: 'URL to an image for the footer icon',
+                    placeholder: 'https://example.com/footer-icon.png',
                   },
                 ],
               },
@@ -1577,7 +1819,18 @@ export class Missive implements INodeType {
         else if (resource === 'post') {
           // Create a post
           if (operation === 'create') {
-            const html = this.getNodeParameter('html', i) as string;
+            const html = this.getNodeParameter('html', i, '') as string;
+            const text = this.getNodeParameter('text', i, '') as string;
+            const markdown = this.getNodeParameter('markdown', i, '') as string;
+            
+            // Check if at least one of the required content fields is provided
+            if (!html && !text && !markdown && 
+                (!this.getNodeParameter('attachments', i, { attachment: [] }) || 
+                 this.getNodeParameter('attachments.attachment', i, []).length === 0)) {
+              throw new NodeOperationError(this.getNode(), 'At least one of HTML, text, markdown, or attachments must be provided', {
+                itemIndex: i,
+              });
+            }
             
             const additionalFields = this.getNodeParameter('additionalFields', i, {}) as {
               references?: string;
@@ -1593,12 +1846,56 @@ export class Missive implements INodeType {
               removeSharedLabels?: string;
               addToInbox?: boolean;
               addToTeamInbox?: boolean;
-              attachments?: { attachment: Array<{ binaryPropertyName: string, fileName: string }> };
+              close?: boolean;
+              reopen?: boolean;
+              markAsUnread?: boolean;
+              suppressNotifications?: boolean;
+              system?: boolean;
             };
             
-            const postData: any = {
-              html,
-            };
+            const postData: any = {};
+            
+            // Add content fields if provided
+            if (html) {
+              postData.html = html;
+            }
+            
+            if (text) {
+              postData.text = text;
+            }
+            
+            if (markdown) {
+              postData.markdown = markdown;
+            }
+            
+            // Add custom username fields
+            const username = this.getNodeParameter('username', i, '') as string;
+            if (username) {
+              postData.username = username;
+            }
+            
+            const usernameIcon = this.getNodeParameter('username_icon', i, '') as string;
+            if (usernameIcon) {
+              postData.username_icon = usernameIcon;
+            }
+            
+            const conversationIcon = this.getNodeParameter('conversation_icon', i, '') as string;
+            if (conversationIcon) {
+              postData.conversation_icon = conversationIcon;
+            }
+            
+            // Add notification if provided
+            const notification = this.getNodeParameter('notification.value', i, null) as {
+              title?: string;
+              body?: string;
+            } | null;
+            
+            if (notification) {
+              postData.notification = {
+                title: notification.title || '',
+                body: notification.body || '',
+              };
+            }
             
             // Add additional fields if any
             if (additionalFields.references) {
@@ -1653,22 +1950,89 @@ export class Missive implements INodeType {
               postData.add_to_team_inbox = additionalFields.addToTeamInbox;
             }
             
-            // Handle attachments if any
-            if (additionalFields.attachments && additionalFields.attachments.attachment) {
+            if (additionalFields.close !== undefined) {
+              postData.close = additionalFields.close;
+            }
+            
+            if (additionalFields.reopen !== undefined) {
+              postData.reopen = additionalFields.reopen;
+            }
+            
+            if (additionalFields.markAsUnread !== undefined) {
+              postData.mark_as_unread = additionalFields.markAsUnread;
+            }
+            
+            if (additionalFields.suppressNotifications !== undefined) {
+              postData.suppress_notifications = additionalFields.suppressNotifications;
+            }
+            
+            if (additionalFields.system !== undefined) {
+              postData.system = additionalFields.system;
+            }
+            
+            // Handle attachments with all possible fields
+            const attachmentItems = this.getNodeParameter('attachments.attachment', i, []) as Array<{
+              binaryPropertyName: string;
+              fileName: string;
+              fields?: { field: Array<{ title: string; value: string; short: boolean }> };
+              color?: string;
+              pretext?: string;
+              author_name?: string;
+              author_link?: string;
+              author_icon?: string;
+              title?: string;
+              title_link?: string;
+              image_url?: string;
+              text?: string;
+              markdown?: string;
+              timestamp?: number;
+              footer?: string;
+              footer_icon?: string;
+            }>;
+            
+            if (attachmentItems && attachmentItems.length > 0) {
               const attachmentsData = [];
               
-              for (const attachment of additionalFields.attachments.attachment) {
-                const binaryData = this.helpers.assertBinaryData(i, attachment.binaryPropertyName);
-                const binaryDataBuffer = await this.helpers.getBinaryDataBuffer(i, attachment.binaryPropertyName);
+              for (const attachment of attachmentItems) {
+                const attachmentData: any = {};
                 
-                const fileName = attachment.fileName || binaryData.fileName || 'unknown';
-                const mimeType = binaryData.mimeType || 'application/octet-stream';
+                // Handle file upload if binary property is provided
+                if (attachment.binaryPropertyName) {
+                  const binaryData = this.helpers.assertBinaryData(i, attachment.binaryPropertyName);
+                  const binaryDataBuffer = await this.helpers.getBinaryDataBuffer(i, attachment.binaryPropertyName);
+                  
+                  const fileName = attachment.fileName || binaryData.fileName || 'unknown';
+                  const mimeType = binaryData.mimeType || 'application/octet-stream';
+                  
+                  attachmentData.filename = fileName;
+                  attachmentData.content_type = mimeType;
+                  attachmentData.content = binaryDataBuffer.toString('base64');
+                }
                 
-                attachmentsData.push({
-                  filename: fileName,
-                  content_type: mimeType,
-                  content: binaryDataBuffer.toString('base64'),
-                });
+                // Add all the attachment metadata fields
+                if (attachment.fields && attachment.fields.field) {
+                  attachmentData.fields = attachment.fields.field.map(field => ({
+                    title: field.title,
+                    value: field.value,
+                    short: field.short,
+                  }));
+                }
+                
+                if (attachment.color) attachmentData.color = attachment.color;
+                if (attachment.pretext) attachmentData.pretext = attachment.pretext;
+                if (attachment.author_name) attachmentData.author_name = attachment.author_name;
+                if (attachment.author_link) attachmentData.author_link = attachment.author_link;
+                if (attachment.author_icon) attachmentData.author_icon = attachment.author_icon;
+                if (attachment.title) attachmentData.title = attachment.title;
+                if (attachment.title_link) attachmentData.title_link = attachment.title_link;
+                if (attachment.image_url) attachmentData.image_url = attachment.image_url;
+                if (attachment.text) attachmentData.text = attachment.text;
+                if (attachment.markdown) attachmentData.markdown = attachment.markdown;
+                if (attachment.timestamp) attachmentData.timestamp = attachment.timestamp;
+                if (attachment.footer) attachmentData.footer = attachment.footer;
+                if (attachment.footer_icon) attachmentData.footer_icon = attachment.footer_icon;
+                
+                attachmentsData.push(attachmentData);
               }
               
               if (attachmentsData.length > 0) {
