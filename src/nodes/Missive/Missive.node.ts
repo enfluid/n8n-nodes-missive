@@ -1824,12 +1824,18 @@ export class Missive implements INodeType {
             const markdown = this.getNodeParameter('markdown', i, '') as string;
             
             // Check if at least one of the required content fields is provided
-            if (!html && !text && !markdown && 
-                (!this.getNodeParameter('attachments', i, { attachment: [] }) || 
-                 this.getNodeParameter('attachments.attachment', i, []).length === 0)) {
-              throw new NodeOperationError(this.getNode(), 'At least one of HTML, text, markdown, or attachments must be provided', {
-                itemIndex: i,
-              });
+            if (
+              !html &&
+              !text &&
+              !markdown &&
+              (!Array.isArray(this.getNodeParameter('attachments.attachment', i, [])) ||
+                  (this.getNodeParameter('attachments.attachment', i, []) as Array<any>).length === 0)
+            ) {
+              throw new NodeOperationError(
+                  this.getNode(),
+                  'At least one of HTML, text, markdown, or attachments must be provided',
+                  { itemIndex: i }
+              );
             }
             
             const additionalFields = this.getNodeParameter('additionalFields', i, {}) as {
