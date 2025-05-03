@@ -46,9 +46,11 @@ export class PostResource implements IResourceHandler {
       const markdown = additionalFields.markdown || '';
       
       // Check if at least one of the required content fields is provided
-      if (!html && !text && !markdown && 
-          (!this.getNodeParameter('attachments', i, { attachment: [] }) || 
-           this.getNodeParameter('attachments.attachment', i, []).length === 0)) {
+      const attachments = this.getNodeParameter('attachments', i, {}) as { attachment?: unknown[] };
+      const attachmentItems = attachments.attachment || [];
+      const hasAttachments = Array.isArray(attachmentItems) && attachmentItems.length > 0;
+      
+      if (!html && !text && !markdown && !hasAttachments) {
         throw new NodeOperationError(this.getNode(), 'At least one of HTML, text, markdown, or attachments must be provided', {
           itemIndex: i,
         });
@@ -168,29 +170,27 @@ export class PostResource implements IResourceHandler {
       }
       
       // Handle attachments with all possible fields
-      const attachmentItems = this.getNodeParameter('attachments.attachment', i, []) as Array<{
-        binaryPropertyName: string;
-        fileName: string;
-        fields?: { field: Array<{ title: string; value: string; short: boolean }> };
-        color?: string;
-        pretext?: string;
-        author_name?: string;
-        author_link?: string;
-        author_icon?: string;
-        title?: string;
-        title_link?: string;
-        image_url?: string;
-        text?: string;
-        markdown?: string;
-        timestamp?: number;
-        footer?: string;
-        footer_icon?: string;
-      }>;
-      
-      if (attachmentItems && attachmentItems.length > 0) {
+      if (hasAttachments) {
         const attachmentsData = [];
         
-        for (const attachment of attachmentItems) {
+        for (const attachment of attachmentItems as Array<{
+          binaryPropertyName?: string;
+          fileName?: string;
+          fields?: { field: Array<{ title: string; value: string; short: boolean }> };
+          color?: string;
+          pretext?: string;
+          author_name?: string;
+          author_link?: string;
+          author_icon?: string;
+          title?: string;
+          title_link?: string;
+          image_url?: string;
+          text?: string;
+          markdown?: string;
+          timestamp?: number;
+          footer?: string;
+          footer_icon?: string;
+        }>) {
           const attachmentData: any = {};
           
           // Handle file upload if binary property is provided
