@@ -754,21 +754,220 @@ export class Missive implements INodeType {
 
       // Post Create Fields
       {
-        displayName: 'HTML Content',
-        name: 'html',
+        displayName: 'Text (Plain)',
+        name: 'text',
         type: 'string',
         default: '',
-        required: true,
         typeOptions: {
           rows: 4,
         },
-        displayOptions: {
-          show: {
-            resource: ['post'],
-            operation: ['create'],
-          },
+        description: 'Plain text content of the post',
+      },
+      {
+        displayName: 'Markdown',
+        name: 'markdown',
+        type: 'string',
+        default: '',
+        typeOptions: {
+          rows: 4,
         },
-        description: 'HTML content of the post',
+        description: 'Markdown-formatted content of the post',
+      },
+      {
+        displayName: 'Attachments',
+        name: 'attachments',
+        placeholder: 'Add Attachment',
+        type: 'fixedCollection',
+        typeOptions: {
+          multipleValues: true,
+        },
+        default: {},
+        options: [
+          {
+            name: 'attachment',
+            displayName: 'Attachment',
+            values: [
+              {
+                displayName: 'Binary Property',
+                name: 'binaryPropertyName',
+                type: 'string',
+                default: 'data',
+                description: 'Name of the binary property containing the attachment data',
+              },
+              {
+                displayName: 'File Name',
+                name: 'fileName',
+                type: 'string',
+                default: '',
+                description: 'Name of the attachment file',
+              },
+              {
+                displayName: 'Attachment Fields',
+                name: 'fields',
+                placeholder: 'Add Field',
+                type: 'fixedCollection',
+                typeOptions: {
+                  multipleValues: true,
+                },
+                default: {},
+                options: [
+                  {
+                    name: 'field',
+                    displayName: 'Field',
+                    values: [
+                      {
+                        displayName: 'Title',
+                        name: 'title',
+                        type: 'string',
+                        default: '',
+                        description: 'Title of the field',
+                      },
+                      {
+                        displayName: 'Value',
+                        name: 'value',
+                        type: 'string',
+                        default: '',
+                        description: 'Value of the field',
+                      },
+                      {
+                        displayName: 'Short',
+                        name: 'short',
+                        type: 'boolean',
+                        default: false,
+                        description: 'If true, field will be displayed in a compact format',
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                displayName: 'Color',
+                name: 'color',
+                type: 'color',
+                default: '',
+                description: 'Color for the attachment (hex code or named color)',
+              },
+              {
+                displayName: 'Pretext',
+                name: 'pretext',
+                type: 'string',
+                default: '',
+                description: 'Text that appears above the attachment',
+              },
+              {
+                displayName: 'Author Name',
+                name: 'author_name',
+                type: 'string',
+                default: '',
+                description: 'Name of the attachment author',
+              },
+              {
+                displayName: 'Author Link',
+                name: 'author_link',
+                type: 'string',
+                default: '',
+                description: 'URL linking to the author',
+                placeholder: 'https://example.com/author',
+              },
+              {
+                displayName: 'Author Icon',
+                name: 'author_icon',
+                type: 'string',
+                default: '',
+                description: 'URL to an image for the author icon',
+                placeholder: 'https://example.com/author-icon.png',
+              },
+              {
+                displayName: 'Title',
+                name: 'title',
+                type: 'string',
+                default: '',
+                description: 'Title of the attachment',
+              },
+              {
+                displayName: 'Title Link',
+                name: 'title_link',
+                type: 'string',
+                default: '',
+                description: 'URL linking to the attachment resource',
+                placeholder: 'https://example.com/resource',
+              },
+              {
+                displayName: 'Image URL',
+                name: 'image_url',
+                type: 'string',
+                default: '',
+                description: 'URL to an image for the attachment',
+                placeholder: 'https://example.com/image.png',
+              },
+              {
+                displayName: 'Text',
+                name: 'text',
+                type: 'string',
+                default: '',
+                description: 'Text content for the attachment',
+              },
+              {
+                displayName: 'Markdown',
+                name: 'markdown',
+                type: 'string',
+                default: '',
+                description: 'Markdown-formatted text for the attachment',
+              },
+              {
+                displayName: 'Timestamp',
+                name: 'timestamp',
+                type: 'number',
+                default: '',
+                description: 'Unix timestamp for the attachment',
+              },
+              {
+                displayName: 'Footer',
+                name: 'footer',
+                type: 'string',
+                default: '',
+                description: 'Footer text for the attachment',
+              },
+              {
+                displayName: 'Footer Icon',
+                name: 'footer_icon',
+                type: 'string',
+                default: '',
+                description: 'URL to an image for the footer icon',
+                placeholder: 'https://example.com/footer-icon.png',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        displayName: 'Notification',
+        name: 'notification',
+        placeholder: 'Add Notification',
+        type: 'fixedCollection',
+        default: {},
+        options: [
+          {
+            name: 'value',
+            displayName: 'Notification',
+            values: [
+              {
+                displayName: 'Title',
+                name: 'title',
+                type: 'string',
+                default: '',
+                description: 'Title of the notification',
+              },
+              {
+                displayName: 'Body',
+                name: 'body',
+                type: 'string',
+                default: '',
+                description: 'Body text of the notification',
+              },
+            ],
+          },
+        ],
       },
       {
         displayName: 'Additional Fields',
@@ -936,222 +1135,6 @@ export class Missive implements INodeType {
             default: '',
             description: 'URL to an image used as the icon in the conversation list',
             placeholder: 'https://example.com/icon.png',
-          },
-          {
-            displayName: 'Text (Plain)',
-            name: 'text',
-            type: 'string',
-            default: '',
-            typeOptions: {
-              rows: 4,
-            },
-            description: 'Plain text content of the post',
-          },
-          {
-            displayName: 'Markdown',
-            name: 'markdown',
-            type: 'string',
-            default: '',
-            typeOptions: {
-              rows: 4,
-            },
-            description: 'Markdown-formatted content of the post',
-          },
-          {
-            displayName: 'Notification',
-            name: 'notification',
-            placeholder: 'Add Notification',
-            type: 'fixedCollection',
-            default: {},
-            options: [
-              {
-                name: 'value',
-                displayName: 'Notification',
-                values: [
-                  {
-                    displayName: 'Title',
-                    name: 'title',
-                    type: 'string',
-                    default: '',
-                    description: 'Title of the notification',
-                  },
-                  {
-                    displayName: 'Body',
-                    name: 'body',
-                    type: 'string',
-                    default: '',
-                    description: 'Body text of the notification',
-                  },
-                ],
-              },
-            ],
-          },
-          {
-            displayName: 'Attachments',
-            name: 'attachments',
-            placeholder: 'Add Attachment',
-            type: 'fixedCollection',
-            typeOptions: {
-              multipleValues: true,
-            },
-            default: {},
-            options: [
-              {
-                name: 'attachment',
-                displayName: 'Attachment',
-                values: [
-                  {
-                    displayName: 'Binary Property',
-                    name: 'binaryPropertyName',
-                    type: 'string',
-                    default: 'data',
-                    description: 'Name of the binary property containing the attachment data',
-                  },
-                  {
-                    displayName: 'File Name',
-                    name: 'fileName',
-                    type: 'string',
-                    default: '',
-                    description: 'Name of the attachment file',
-                  },
-                  {
-                    displayName: 'Attachment Fields',
-                    name: 'fields',
-                    placeholder: 'Add Field',
-                    type: 'fixedCollection',
-                    typeOptions: {
-                      multipleValues: true,
-                    },
-                    default: {},
-                    options: [
-                      {
-                        name: 'field',
-                        displayName: 'Field',
-                        values: [
-                          {
-                            displayName: 'Title',
-                            name: 'title',
-                            type: 'string',
-                            default: '',
-                            description: 'Title of the field',
-                          },
-                          {
-                            displayName: 'Value',
-                            name: 'value',
-                            type: 'string',
-                            default: '',
-                            description: 'Value of the field',
-                          },
-                          {
-                            displayName: 'Short',
-                            name: 'short',
-                            type: 'boolean',
-                            default: false,
-                            description: 'If true, field will be displayed in a compact format',
-                          },
-                        ],
-                      },
-                    ],
-                  },
-                  {
-                    displayName: 'Color',
-                    name: 'color',
-                    type: 'color',
-                    default: '',
-                    description: 'Color for the attachment (hex code or named color)',
-                  },
-                  {
-                    displayName: 'Pretext',
-                    name: 'pretext',
-                    type: 'string',
-                    default: '',
-                    description: 'Text that appears above the attachment',
-                  },
-                  {
-                    displayName: 'Author Name',
-                    name: 'author_name',
-                    type: 'string',
-                    default: '',
-                    description: 'Name of the attachment author',
-                  },
-                  {
-                    displayName: 'Author Link',
-                    name: 'author_link',
-                    type: 'string',
-                    default: '',
-                    description: 'URL linking to the author',
-                    placeholder: 'https://example.com/author',
-                  },
-                  {
-                    displayName: 'Author Icon',
-                    name: 'author_icon',
-                    type: 'string',
-                    default: '',
-                    description: 'URL to an image for the author icon',
-                    placeholder: 'https://example.com/author-icon.png',
-                  },
-                  {
-                    displayName: 'Title',
-                    name: 'title',
-                    type: 'string',
-                    default: '',
-                    description: 'Title of the attachment',
-                  },
-                  {
-                    displayName: 'Title Link',
-                    name: 'title_link',
-                    type: 'string',
-                    default: '',
-                    description: 'URL linking to the attachment resource',
-                    placeholder: 'https://example.com/resource',
-                  },
-                  {
-                    displayName: 'Image URL',
-                    name: 'image_url',
-                    type: 'string',
-                    default: '',
-                    description: 'URL to an image for the attachment',
-                    placeholder: 'https://example.com/image.png',
-                  },
-                  {
-                    displayName: 'Text',
-                    name: 'text',
-                    type: 'string',
-                    default: '',
-                    description: 'Text content for the attachment',
-                  },
-                  {
-                    displayName: 'Markdown',
-                    name: 'markdown',
-                    type: 'string',
-                    default: '',
-                    description: 'Markdown-formatted text for the attachment',
-                  },
-                  {
-                    displayName: 'Timestamp',
-                    name: 'timestamp',
-                    type: 'number',
-                    default: '',
-                    description: 'Unix timestamp for the attachment',
-                  },
-                  {
-                    displayName: 'Footer',
-                    name: 'footer',
-                    type: 'string',
-                    default: '',
-                    description: 'Footer text for the attachment',
-                  },
-                  {
-                    displayName: 'Footer Icon',
-                    name: 'footer_icon',
-                    type: 'string',
-                    default: '',
-                    description: 'URL to an image for the footer icon',
-                    placeholder: 'https://example.com/footer-icon.png',
-                  },
-                ],
-              },
-            ],
           },
         ],
       },
@@ -1819,13 +1802,11 @@ export class Missive implements INodeType {
         else if (resource === 'post') {
           // Create a post
           if (operation === 'create') {
-            const html = this.getNodeParameter('html', i, '') as string;
             const text = this.getNodeParameter('text', i, '') as string;
             const markdown = this.getNodeParameter('markdown', i, '') as string;
             
             // Check if at least one of the required content fields is provided
             if (
-              !html &&
               !text &&
               !markdown &&
               (!Array.isArray(this.getNodeParameter('attachments.attachment', i, [])) ||
@@ -1861,10 +1842,7 @@ export class Missive implements INodeType {
             
             const postData: any = {};
             
-            // Add content fields if provided
-            if (html) {
-              postData.html = html;
-            }
+        
             
             if (text) {
               postData.text = text;
